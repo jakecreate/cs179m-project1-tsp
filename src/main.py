@@ -15,15 +15,17 @@ def generate_image(X, route, file_name, distance):
     for i, (x_i, y_i) in enumerate(X):
         ax.annotate(f'{i+1}', xy=(x_i, y_i), color='black', va='bottom', ha='left', fontsize='small')
     
-    fig.savefig(f'../output/{file_name}_SOLUTION_{distance}.png', dpi=dpi)
+    fig.savefig(f'../output/{name}_SOLUTION_{distance}.png', dpi=dpi)
     
 if __name__ == '__main__':
     # INPUT I
+    
     FOLDER_PATH = '../data/'
-    file_name = 'circle'
+    file_name = input('Enter the name of file: ')
     
-    X = np.loadtxt(FOLDER_PATH+file_name+'.txt')
-    
+    X = np.loadtxt(FOLDER_PATH+file_name)
+    print(f'There are {X.shape[0]} nodes, computing route...')
+    print(f'\t Shortest Route Discovered So Far')
     # START tsp anytime algorithm + input II: interruption key ENTER
     
     # END algorithm when key ENTER is pressed
@@ -38,9 +40,7 @@ if __name__ == '__main__':
     print(f'total distance: {math.ceil(distance)}')
     
     route.append(route[0])
-    np.savetxt(f'../output/{file_name}_SOLUTION_{distance}.txt', route, fmt='%.0f')
+    name = file_name.split('.')[0]
+    np.savetxt(f'../output/{name}_SOLUTION_{distance}.txt', route, fmt='%.0f')
     
-    generate_image(X, route, file_name, distance)
-    
-    
-    
+    generate_image(X, route, name, distance)
