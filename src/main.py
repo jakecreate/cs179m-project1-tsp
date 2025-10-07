@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-def generate_image(X, route, file_name, distance):
+def generate_image(X, route, name, distance):
     dpi = 100
     fig, ax = plt.subplots(figsize=(1980/dpi, 1980/dpi), dpi=dpi)
     sort_mask = np.array(route) - 1
