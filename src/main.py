@@ -17,7 +17,6 @@ def generate_image(X, route, file_name, distance):
     
     fig.savefig(f'../output/{file_name}_SOLUTION_{distance}.png', dpi=dpi)
     
-
 if __name__ == '__main__':
     # INPUT I
     FOLDER_PATH = '../data/'
@@ -28,17 +27,20 @@ if __name__ == '__main__':
     # START tsp anytime algorithm + input II: interruption key ENTER
     
     # END algorithm when key ENTER is pressed
-    distance, route = (1234, [1, 2, 3, 4]) # algorithm output
+    temp_list = [i + 1 for i in range(X.shape[0])]
+    
+    distance, route = (1234, temp_list) # algorithm output
     
     # OUTPUT
     if distance > 6000:
         print(f'Warning: Solution is {math.ceil(distance)}, greater than the 6000 - meter constraint')
-    
+        
     print(f'total distance: {math.ceil(distance)}')
     
     route.append(route[0])
     np.savetxt(f'../output/{file_name}_SOLUTION_{distance}.txt', route, fmt='%.0f')
     
     generate_image(X, route, file_name, distance)
+    
     
     
