@@ -28,6 +28,8 @@ if __name__ == '__main__':
     print(f'\t Shortest Route Discovered So Far')
     # START tsp anytime algorithm + input II: interruption key ENTER
     
+    
+
     # END algorithm when key ENTER is pressed
     temp_list = [i + 1 for i in range(X.shape[0])]
     
