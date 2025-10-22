@@ -42,4 +42,33 @@ def random_neighbor(order):
 #
 # During execution, every time we find a new best route, print the distance to the terminal.
 def simulated_annealing(arr):
+    # best_so_far_order = random order
+    # best_so_far_dist = find_total_distance(best_so_far_order)
+    # current_order = best_so_far_order
+    # current_dist = best_so_far_dist
+    # while (enter key hasn't been pressed):
+    #   temperature = whatever scheduled temperature we have for this iteration
+    #   if (temperature == 0):
+    #       return best_so_far_order, best_so_far_dist
+    #   candidate_order = random_neighbor(best_so_far_order)
+    #   candidate_dist = find_total_distance(candidate_order)
+    #   E = current_dist - candidate_dist
+    #   if (E > 0):     // if the candidate is better, take that instead
+    #       current_order = candidate_order
+    #       current_dist = candidate_dist
+    #       if (current_dist < best_so_far_dist):   // if the current distance is the best we've seen so far  
+    #           best_so_far_order = current_order
+    #           best_so_far_dist = current_dist
+    #           print(best_so_far_dist)
+    #   else:
+    #       probability = math.e**(E / temperature)
+    #       if (random() < prob):
+    #           current_order = candidate_order
+    #           current_dist = candidate_dist
+    #           if (current_dist < best_so_far_dist):   // if the current distance is the best we've seen so far  
+    #               best_so_far_order = current_order
+    #               best_so_far_dist = current_dist
+    #               print(best_so_far_dist)
+    # return best_so_far_order, best_so_far_dist
+    
     pass
