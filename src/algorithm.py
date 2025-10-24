@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import random
+import threading
+import time
+import keyboard
 
 # input:
 # arr - a numpy array. In main.py, this array is called X. It contains an array of length 2 arrays.
@@ -44,6 +47,19 @@ def random_neighbor(order):
     order[rand_1], order[rand_2] = order[rand_2], order[rand_1]
 
 # input:
+# iteration - the number of the iteration that the algorithm is on
+#
+# output:
+# Output the temperature at that iteration. I chose exponential cooling since it
+# allows for a lot of exploration early on and then starts honing in on a solution
+# later but still allows for some exploration even after some time. Allowing for
+# more exploration early on will help the algorithm find a better solution faster.
+# I chose T_start = 0.85 because the cost of choosing a bad option isn't too large.
+def temperature_function(iteration):
+    # return T_start * (alpha ** iteration)
+    return 0.85 * (0.95 ** iteration)
+
+# input:
 # arr - a numpy array. In main.py, this array is called X. It contains an array of length 2 arrays.
 # These are the coords of all the points.
 # The first pair of numbers are the coords for the landing pad (aka the starting point).
@@ -70,13 +86,24 @@ def simulated_annealing(arr):
             best_so_far_order.append(rand)
     best_so_far_order.append(1)
 
-    # best_so_far_dist = find_total_distance(best_so_far_order)
-    # current_order = best_so_far_order
-    # current_dist = best_so_far_dist
-    # while (enter key hasn't been pressed):
-    #   temperature = whatever scheduled temperature we have for this iteration
-    #   if (temperature == 0):
-    #       return best_so_far_order, best_so_far_dist
+    best_so_far_dist = find_total_distance(arr, best_so_far_order)
+    current_order = best_so_far_order
+    current_dist = best_so_far_dist
+
+    enter_key_pressed = False
+    def wait_for_enter():
+        nonlocal enter_key_pressed
+        keyboard.wait('enter', suppress = True)
+        enter_key_pressed = True
+
+    enter_key_thread = threading.Thread(target = wait_for_enter, daemon = True)
+    enter_key_thread.start()
+
+    iteration = 0
+    while (not enter_key_pressed):
+        temperature = temperature_function(iteration)
+        if (temperature == 0):
+            return best_so_far_order, best_so_far_dist
     #   candidate_order = random_neighbor(best_so_far_order)
     #   candidate_dist = find_total_distance(candidate_order)
     #   E = current_dist - candidate_dist
@@ -96,6 +123,5 @@ def simulated_annealing(arr):
     #               best_so_far_order = current_order
     #               best_so_far_dist = current_dist
     #               print(best_so_far_dist)
-    # return best_so_far_order, best_so_far_dist
-    
-    pass
+        iteration += 1
+    return best_so_far_order, best_so_far_dist
