@@ -30,20 +30,21 @@ if __name__ == '__main__':
     print(f'\t Shortest Route Discovered So Far')
     # START tsp anytime algorithm + input II: interruption key ENTER
     
-    algorithm.simulated_annealing(X)
+    distance, route = algorithm.simulated_annealing(X)
 
     # END algorithm when key ENTER is pressed
-    temp_list = [i + 1 for i in range(X.shape[0])]
+    # temp_list = [i + 1 for i in range(X.shape[0])]
     
-    distance, route = (1234, temp_list) # algorithm output
+    # distance, route = (1234, temp_list) # algorithm output
 
+    print("\ndistance: ", distance)
+    print("route: ", route)
     # OUTPUT
     if distance > 6000:
         print(f'Warning: Solution is {math.ceil(distance)}, greater than the 6000 - meter constraint')
         
     print(f'total distance: {math.ceil(distance)}')
     
-    route.append(route[0])
     name = file_name.split('.')[0]
     np.savetxt(f'./output/{name}_SOLUTION_{distance}.txt', route, fmt='%.0f')
     
