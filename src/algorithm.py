@@ -58,7 +58,7 @@ def random_neighbor(order):
 # I chose T_start = 0.85 because the cost of choosing a bad option isn't too large.
 def temperature_function(iteration):
     # T = T_start * (alpha ** iteration)
-    return 0.85 * (0.99 ** iteration)
+    return 0.85 * (0.99999 ** iteration)
 
 # input:
 # arr - a numpy array. In main.py, this array is called X. It contains an array of length 2 arrays.
@@ -76,7 +76,7 @@ def temperature_function(iteration):
 # During execution, every time we find a new best route, print the distance to the terminal.
 def simulated_annealing(arr):
     num_points = int(arr.size / 2)
-
+    time_dist_list = [] # keep track for graph
     # best_so_far_order = random order
     best_so_far_order = []
     best_so_far_order.append(1)
@@ -88,10 +88,12 @@ def simulated_annealing(arr):
     best_so_far_order.append(1)
 
     best_so_far_dist = find_total_distance(arr, best_so_far_order)
-    print(best_so_far_dist)
+    print(f'\t{round(best_so_far_dist, 1)}')
     current_order = best_so_far_order.copy()
     current_dist = best_so_far_dist
-
+    
+    time_dist_list.append([0, best_so_far_dist])
+    
     enter_key_pressed = False
     def wait_for_enter(key):
         nonlocal enter_key_pressed
@@ -104,6 +106,8 @@ def simulated_annealing(arr):
 
 
     iteration = 0
+    init_time = time.time() # start time
+    prev_time = init_time
     while (not enter_key_pressed):
         temperature = temperature_function(iteration)
         if (temperature == 0):
@@ -118,7 +122,8 @@ def simulated_annealing(arr):
             if (current_dist < best_so_far_dist):   # if the current distance is the best we've seen so far  
                 best_so_far_order = current_order.copy()
                 best_so_far_dist = current_dist
-                print(best_so_far_dist)
+                print(f'\t{round(best_so_far_dist, 1)}')
+                
         else:          # if the candidate is worse, have a random chance to take it anyways
             probability = math.e**(E / temperature)
             if (random.random() < probability):
@@ -129,8 +134,68 @@ def simulated_annealing(arr):
                 if (current_dist < best_so_far_dist):   # if the current distance is the best we've seen so far  
                     best_so_far_order = current_order.copy()
                     best_so_far_dist = current_dist
-                    print(best_so_far_dist)
+                    print(f'\t{round(best_so_far_dist, 1)}')
+        
+        present = time.time()
+        if (present - prev_time >= 0.5):
+            time_dist_list.append([present - init_time, best_so_far_dist])
+            prev_time = time.time() 
+                 
         iteration += 1
         if (iteration % 250):
             time.sleep(0.001)
-    return best_so_far_dist, best_so_far_order
+
+    return best_so_far_dist, best_so_far_order, np.array(time_dist_list)
+
+# basline
+def random_search(X): 
+    # distance matrix
+    m = X.shape[0]
+    b1, b2 = X[:, np.newaxis, :], X[np.newaxis, :, :] # (m, 1, n), (1, m, n)
+    dist_mtx = np.linalg.norm(b1 - b2, axis=2)
+    
+    # from simulated annealing 
+    enter_key_pressed = False
+    def wait_for_enter(key):
+        nonlocal enter_key_pressed
+        if (key == keyboard.Key.enter):
+            enter_key_pressed = True
+            return False    # stop the listener
+
+    listener = keyboard.Listener(on_press=wait_for_enter, suppress=True)
+    listener.start()
+    
+    min_dist = math.inf
+    init_time = time.time() # start time
+    prev_time = init_time
+    time_dist_list = []
+    
+    while not enter_key_pressed: 
+        
+        rand_order = np.hstack([0, np.random.permutation(np.arange(1, X.shape[0])), 0])
+        total_dist = 0
+        
+        for i in range(1, m):
+            total_dist+=dist_mtx[rand_order[i], rand_order[i-1]]
+
+        present = time.time()
+        if present - prev_time >= 0.5:
+            time_dist_list.append([present - init_time, min_dist])
+            prev_time = time.time()
+            
+        if total_dist < min_dist:
+            order = rand_order
+            min_dist = total_dist
+            print(f'\t{round(min_dist,1)}')
+               
+    return min_dist, order, np.array(time_dist_list)
+            
+            
+        
+    
+    
+        
+    
+    
+    
+    

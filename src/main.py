@@ -4,7 +4,7 @@ import math
 
 import algorithm
 
-def generate_image(X, route, name, distance):
+def generate_solution(X, route, name, distance):
     dpi = 100
     fig, ax = plt.subplots(figsize=(1980/dpi, 1980/dpi), dpi=dpi)
     sort_mask = np.array(route) - 1
@@ -18,6 +18,7 @@ def generate_image(X, route, name, distance):
         ax.annotate(f'{i+1}', xy=(x_i, y_i), color='black', va='bottom', ha='left', fontsize='small')
     
     fig.savefig(f'./output/{name}_SOLUTION_{distance}.png', dpi=dpi)
+
     
 if __name__ == '__main__':
     # INPUT I
@@ -27,12 +28,13 @@ if __name__ == '__main__':
     print(FOLDER_PATH+file_name)
     X = np.loadtxt(FOLDER_PATH+file_name)
     print(f'There are {X.shape[0]} nodes, computing route...')
-    print(f'\t Shortest Route Discovered So Far')
-    # START tsp anytime algorithm + input II: interruption key ENTER
+    print(f'\tShortest Route Discovered So Far')
     
-    distance, route = algorithm.simulated_annealing(X)
-
+    algo_func = algorithm.random_search
+    # START tsp anytime algorithm + input II: interruption key ENTER
+    distance, route, time_dist_list = algo_func(X)
     # END algorithm when key ENTER is pressed
+    
 
     # OUTPUT
     if distance > 6000:
@@ -41,6 +43,6 @@ if __name__ == '__main__':
     print(f'total distance: {math.ceil(distance)}')
     
     name = file_name.split('.')[0]
-    np.savetxt(f'./output/{name}_SOLUTION_{distance}.txt', route, fmt='%.0f')
-    
-    generate_image(X, route, name, distance)
+    np.savetxt(f'./output/{name}_SOLUTION_{math.ceil(distance)}.txt', route, fmt='%.0f')
+    np.savetxt(f'./experiment/{algo_func.__name__}_EXP_{math.ceil(distance)}.txt', time_dist_list, fmt='%.3f')
+    generate_solution(X, route, name, math.ceil(distance))
