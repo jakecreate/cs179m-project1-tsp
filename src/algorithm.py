@@ -92,17 +92,6 @@ def simulated_annealing(arr):
     current_order = best_so_far_order.copy()
     current_dist = best_so_far_dist
 
-    # handle the enter key interrupt
-    # enter_key_pressed = False
-    # def wait_for_enter():
-    #     nonlocal enter_key_pressed
-    #     keyboard.wait('enter', suppress = True)
-    #     enter_key_pressed = True
-
-    # enter_key_thread = threading.Thread(target = wait_for_enter, daemon = True)
-    # enter_key_thread.start()
-
-
     enter_key_pressed = False
     def wait_for_enter(key):
         nonlocal enter_key_pressed
@@ -110,7 +99,7 @@ def simulated_annealing(arr):
             enter_key_pressed = True
             return False    # stop the listener
 
-    listener = keyboard.Listener(on_press=wait_for_enter)
+    listener = keyboard.Listener(on_press=wait_for_enter, suppress=True)
     listener.start()
 
 
