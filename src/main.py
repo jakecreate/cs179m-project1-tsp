@@ -33,12 +33,7 @@ if __name__ == '__main__':
     distance, route = algorithm.simulated_annealing(X)
 
     # END algorithm when key ENTER is pressed
-    # temp_list = [i + 1 for i in range(X.shape[0])]
-    
-    # distance, route = (1234, temp_list) # algorithm output
 
-    print("\ndistance: ", distance)
-    print("route: ", route)
     # OUTPUT
     if distance > 6000:
         print(f'Warning: Solution is {math.ceil(distance)}, greater than the 6000 - meter constraint')

@@ -4,7 +4,8 @@ import math
 import random
 import threading
 import time
-import keyboard
+# import keyboard
+from pynput import keyboard
 
 # input:
 # arr - a numpy array. In main.py, this array is called X. It contains an array of length 2 arrays.
@@ -92,13 +93,15 @@ def simulated_annealing(arr):
     current_dist = best_so_far_dist
 
     enter_key_pressed = False
-    def wait_for_enter():
+    def wait_for_enter(key):
         nonlocal enter_key_pressed
-        keyboard.wait('enter', suppress = True)
-        enter_key_pressed = True
+        if (key == keyboard.Key.enter):
+            enter_key_pressed = True
+            return False    # stop the listener
 
-    enter_key_thread = threading.Thread(target = wait_for_enter, daemon = True)
-    enter_key_thread.start()
+    listener = keyboard.Listener(on_press=wait_for_enter, suppress=True)
+    listener.start()
+
 
     iteration = 0
     while (not enter_key_pressed):
