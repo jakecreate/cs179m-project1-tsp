@@ -130,5 +130,4 @@ def simulated_annealing(arr):
         iteration += 1
         if (iteration % 250):
             time.sleep(0.001)
-    print("Enter interrupt")
     return best_so_far_dist, best_so_far_order
