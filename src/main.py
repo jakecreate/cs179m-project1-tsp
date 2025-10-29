@@ -30,7 +30,7 @@ if __name__ == '__main__':
     print(f'There are {X.shape[0]} nodes, computing route...')
     print(f'\tShortest Route Discovered So Far')
     
-    algo_func = algorithm.random_search
+    algo_func = algorithm.simulated_annealing
     # START tsp anytime algorithm + input II: interruption key ENTER
     distance, route, time_dist_list = algo_func(X)
     # END algorithm when key ENTER is pressed

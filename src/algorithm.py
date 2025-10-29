@@ -111,7 +111,7 @@ def simulated_annealing(arr):
     while (not enter_key_pressed):
         temperature = temperature_function(iteration)
         if (temperature == 0):
-            return best_so_far_dist, best_so_far_order
+            return best_so_far_dist, best_so_far_order, np.array(time_dist_list)
         candidate_order = current_order.copy()
         random_neighbor(candidate_order)
         candidate_dist = find_total_distance(arr, candidate_order)
