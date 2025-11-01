@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import os
+import sys
 
 import algorithm
 
@@ -25,6 +27,9 @@ if __name__ == '__main__':
     
     FOLDER_PATH = './data/'
     file_name = input('Enter the name of file: ')
+    if not os.path.exists(FOLDER_PATH+file_name):
+        print(f"The file {FOLDER_PATH+file_name} does not exist.")
+        sys.exit(1)
     print(FOLDER_PATH+file_name)
     X = np.loadtxt(FOLDER_PATH+file_name)
     print(f'There are {X.shape[0]} nodes, computing route...')
