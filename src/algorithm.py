@@ -2,9 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import random
-import threading
 import time
-# import keyboard
 from pynput import keyboard
 
 # input:
@@ -142,6 +140,9 @@ def simulated_annealing(arr):
             prev_time = time.time() 
                  
         iteration += 1
+
+        # have a tiny pause periodically to aleviate the CPU from all the
+        # computations and let it read the enter key press
         if (iteration % 250):
             time.sleep(0.001)
 
