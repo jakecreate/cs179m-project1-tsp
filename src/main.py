@@ -49,5 +49,5 @@ if __name__ == '__main__':
     
     name = file_name.split('.')[0]
     np.savetxt(f'./output/{name}_SOLUTION_{math.ceil(distance)}.txt', route, fmt='%.0f')
-    np.savetxt(f'./experiment/{algo_func.__name__}_EXP_{math.ceil(distance)}.txt', time_dist_list, fmt='%.3f')
+    np.savetxt(f'./experiment/{file_name}_EXP_{math.ceil(distance)}.txt', time_dist_list, fmt='%.3f')
     generate_solution(X, route, name, math.ceil(distance))

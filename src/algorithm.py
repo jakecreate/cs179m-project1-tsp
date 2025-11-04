@@ -53,10 +53,11 @@ def random_neighbor(order):
 # allows for a lot of exploration early on and then starts honing in on a solution
 # later but still allows for some exploration even after some time. Allowing for
 # more exploration early on will help the algorithm find a better solution faster.
-# I chose T_start = 0.85 because the cost of choosing a bad option isn't too large.
+# I chose T_start = 50 because the cost of choosing a bad option isn't too large.
 def temperature_function(iteration):
     # T = T_start * (alpha ** iteration)
-    return 0.85 * (0.99999 ** iteration)
+    return 50 * (0.9**(iteration/1_000))
+    
 
 # input:
 # arr - a numpy array. In main.py, this array is called X. It contains an array of length 2 arrays.
@@ -75,6 +76,7 @@ def temperature_function(iteration):
 def simulated_annealing(arr):
     num_points = int(arr.size / 2)
     time_dist_list = [] # keep track for graph
+    
     # best_so_far_order = random order
     best_so_far_order = []
     best_so_far_order.append(1)
@@ -146,6 +148,7 @@ def simulated_annealing(arr):
         if (iteration % 250):
             time.sleep(0.001)
 
+    print(iteration)
     return best_so_far_dist, best_so_far_order, np.array(time_dist_list)
 
 # basline
