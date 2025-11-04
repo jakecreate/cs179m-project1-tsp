@@ -30,12 +30,18 @@ if __name__ == '__main__':
     if not os.path.exists(FOLDER_PATH+file_name):
         print(f"The file {FOLDER_PATH+file_name} does not exist.")
         sys.exit(1)
-    print(FOLDER_PATH+file_name)
-    X = np.loadtxt(FOLDER_PATH+file_name)
-    print(f'There are {X.shape[0]} nodes, computing route...')
-    print(f'\tShortest Route Discovered So Far')
     
-    algo_func = algorithm.simulated_annealing
+    X = np.loadtxt(FOLDER_PATH+file_name)
+
+    if X.shape[0] > 256:
+        print("The file contains more than 256 locations.")
+    elif X.shape[0] == 0:
+        print("The file contains no locations.")
+    else:
+        print(f'There are {X.shape[0]} nodes, computing route...')
+        print(f'\tShortest Route Discovered So Far')
+    
+    algo_func = algorithm.random_search
     # START tsp anytime algorithm + input II: interruption key ENTER
     distance, route, time_dist_list = algo_func(X)
     # END algorithm when key ENTER is pressed
@@ -44,10 +50,9 @@ if __name__ == '__main__':
     # OUTPUT
     if distance > 6000:
         print(f'Warning: Solution is {math.ceil(distance)}, greater than the 6000 - meter constraint')
-        
-    print(f'total distance: {math.ceil(distance)}')
     
     name = file_name.split('.')[0]
+    print(f'Route written to disk as {name}_SOLUTION_{math.ceil(distance)}.txt')
     np.savetxt(f'./output/{name}_SOLUTION_{math.ceil(distance)}.txt', route, fmt='%.0f')
     np.savetxt(f'./experiment/{file_name}_EXP_{math.ceil(distance)}.txt', time_dist_list, fmt='%.3f')
     generate_solution(X, route, name, math.ceil(distance))
