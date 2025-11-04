@@ -41,7 +41,7 @@ if __name__ == '__main__':
         print(f'There are {X.shape[0]} nodes, computing route...')
         print(f'\tShortest Route Discovered So Far')
     
-    algo_func = algorithm.random_search
+    algo_func = algorithm.simulated_annealing
     # START tsp anytime algorithm + input II: interruption key ENTER
     distance, route, time_dist_list = algo_func(X)
     # END algorithm when key ENTER is pressed
@@ -54,5 +54,5 @@ if __name__ == '__main__':
     name = file_name.split('.')[0]
     print(f'Route written to disk as {name}_SOLUTION_{math.ceil(distance)}.txt')
     np.savetxt(f'./output/{name}_SOLUTION_{math.ceil(distance)}.txt', route, fmt='%.0f')
-    np.savetxt(f'./experiment/{file_name}_EXP_{math.ceil(distance)}.txt', time_dist_list, fmt='%.3f')
+    np.savetxt(f'./experiment/{name}_EXP_{math.ceil(distance)}.txt', time_dist_list, fmt='%.3f')
     generate_solution(X, route, name, math.ceil(distance))
